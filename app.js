@@ -1,11 +1,12 @@
 var EventEmitter = require('events').EventEmitter
-  , fs = require('fs');
+  , fs = require('fs')
+  , modes = require('./modes.js');
 
 main();
 
 function main(){
 
-    // Make an eventEmitter
+    // Make an EventEmitter
     var emitter = new EventEmitter();
 
     emitter.on('register', function(name){
