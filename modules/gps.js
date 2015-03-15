@@ -21,11 +21,17 @@ serialPort = new SerialPort('/dev/ttyMFD1', {
 serialPort.on('data', saveLatestData);
 
 function saveLatestData(data) {
-  if (data) {
+  if (/^\$GPGGA/.test(data)) {
     try {
-      gps_line = nmeaParser.parse(data.trim());
-      console.log(gps_line);
-      emitter.emit('gps', gps_line);
+      var gps_line = nmeaParser.parse(data.trim());
+
+      if (gps_line.fix) {
+        // AGGGHHHHHH!!1
+        // We were getting memory corruption issues. maybe this will halp
+        gps_line = JSON.parse(JSON.stringify(gps_line));
+        console.log("GPS location: " + gps_line.latitude + ", " + gps_line.longitude);
+        emitter.emit('gps', gps_line);
+      }
     } catch (Error) {
       console.log("got corrupted data from GPS: " + gps_line);
     }
