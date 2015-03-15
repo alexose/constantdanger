@@ -3,7 +3,7 @@
 module.exports = {
 
     general : {
-        entropy:              40,
+        entropy:              15,
         air_quality:          30,
         excessivetemperature: 20, // Temp > 100
         lowtemperature:       20,  // Temp < 20

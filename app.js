@@ -3,9 +3,13 @@ var EventEmitter = require('events').EventEmitter
   , modes = require('./modes.js')
   , log = require('npmlog')
   , sparkline = require('sparkline')
-  , colors = require('colors');
+  , colors = require('colors')
+  , cursor = require('ansi')(process.stdout);
 
-log.level = 'verbose';
+cursor.hide();
+
+var verbose = false;
+log.level = verbose ? 'verbose' : 'info';
 
 main();
 
@@ -61,24 +65,30 @@ function updateReadout(index, mode){
 
     // Based on the keys we specify, multiple value by weight and add them together
     for (var prop in formula){
-        var multiplier = formula[prop] / 100
+        var multiplier = formula[prop] / 100 || 0
           , value = parseFloat(index[prop], 10) || 0;
 
         arr.push(value);
         total += value * multiplier;
+
+        if (verbose){
+          info += prop + ': ' + (Math.round(value * 100) / 100) + ' * ' + multiplier + ', ';
+        }
     }
 
-    var str = Math.round((total * 100) / 100).toString();
+    var num = Math.round(total * 10000) / 10000 || 0
+      , str = num.toFixed(2);
 
     // Colorize
-    if (total >= 0)  str = str.green;
+    if (total >= 0) str = str.green;
     if (total > 20) str = str.yellow;
-    if (total > 40) str = str.orange;
     if (total > 60) str = str.red;
 
-    process.stdout.clearLine();  // clear current text
-    process.stdout.cursorTo(0);  // move cursor to beginning of line
-    process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')');
+    setTimeout(function(){
+        process.stdout.cursorTo(0);  // move cursor to beginning of line
+        process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')                ' + info);
+    }, 10);
+
 }
 
 function getFiles (dir, files_){
@@ -95,3 +105,12 @@ function getFiles (dir, files_){
     return files_;
 }
 
+// Show cursor on quit
+process.on('SIGINT', function () {
+    cursor.show().write('\n')
+    process.exit();
+})
+
+process.on('exit', function () {
+    cursor.show().write('\n')
+})

@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/alexose/constantdanger",
   "dependencies": {
+    "ansi": "^0.3.0",
     "colors": "^1.0.3",
     "nmea-0183": "0.0.7",
     "npmlog": "^1.2.0",

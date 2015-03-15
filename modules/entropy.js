@@ -4,17 +4,26 @@ module.exports = function(emitter){
 
   emitter.emit('register', 'entropy');
 
+  var arr = [];
+
   setInterval(function(){
 
     var entropy = Math.random() * 100;
 
-    // If we randomly get a value above 90... DANGER
-    if (entropy > 90){
-      var value =  Math.min((entropy - 90) * 10, 100);
-      emitter.emit('entropy', value);
-    } else {
-      emitter.emit('entropy', 0);
+    // Take a rolling average of the last 20 values...
+    if (arr.length > 20){
+        arr.shift()
     }
 
-  }, 1 * 5000);
+    arr.push(entropy);
+
+    var total = arr.reduce(function(a, b){
+        return a + b;
+    });
+
+    var avg = total / arr.length;
+
+    emitter.emit('entropy', avg / 10);
+
+  }, 1 * 50);
 }
