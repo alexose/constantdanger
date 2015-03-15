@@ -68,11 +68,17 @@ function updateReadout(index, mode){
         total += value * multiplier;
     }
 
-    var str = Math.round((total * 100) / 100).toString().red;
+    var str = Math.round((total * 100) / 100).toString();
+
+    // Colorize
+    if (total >= 0)  str = str.green;
+    if (total > 20) str = str.yellow;
+    if (total > 40) str = str.orange;
+    if (total > 60) str = str.red;
 
     process.stdout.clearLine();  // clear current text
     process.stdout.cursorTo(0);  // move cursor to beginning of line
-    process.stdout.write('     Danger level: ' + sparkline(arr) + '    (' + str + ')');
+    process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')');
 }
 
 function getFiles (dir, files_){
