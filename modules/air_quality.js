@@ -1,7 +1,7 @@
 var mraa = require('mraa')
 
 module.exports = function(emitter, pin) {
-	AirQuality = {
+	var AirQuality = {
 		scan: function() {
 			var sensor = new mraa.Aio(pin || 0)
 			return this.to_percentage(sensor.read())
