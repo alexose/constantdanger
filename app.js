@@ -153,7 +153,7 @@ function updateReadout(index, ioDevices){
     setTimeout(function(){
 
         // TODO: scale this value nicely
-        ioDevices.setGuage(Math.min(num, 100));
+        ioDevices.setGuage(Math.min(num, 100) * 5);
 
         process.stdout.cursorTo(0);  // move cursor to beginning of line
         process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')                ' + info);
