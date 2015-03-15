@@ -9,23 +9,25 @@ console.log(temp.name());
 module.exports = function(emitter){
 
   emitter.emit('register', 'excessivetemperature');
+  emitter.emit('register', 'lowtemperature');
 
   // Read the temperature ten times, printing both the Celsius and
   // equivalent Fahrenheit temperature, waiting one second between readings
-  var i = 0;
+  setInterval(function(){
 
-  var waiting = setInterval(function(){
+    var temp = celsius * 9.0/5.0 + 32.0
+      , value;
 
-    var celsius = temp.value();
-    var fahrenheit = celsius * 9.0/5.0 + 32.0;
-    console.log(celsius + " degrees Celsius, or " + Math.round(fahrenheit) + " degrees Fahrenheit");
+    // Broadcast a value on excessive temperature
+    if (temp > 90){
+      var value =  Math.min((temp - 90) * 2, 100);
+      emitter.emit('excessivetemperature', value);
+    }
 
-    // emitter.emit('excessivetemperature', Math.random() * 100);
-
-
-
-    i++;
-    // if (i == 10) clearInterval(waiting);
+    // Broadcast a value on super-duper low temperature
+    if (temp < 20){
+      var value = Math.min((temp - 40) * -2, 100)
+      emitter.emit('lowtemperature', value);
+    }
   }, 1000);
-
 }
