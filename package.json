@@ -13,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/alexose/constantdanger/issues"
   },
-  "homepage": "https://github.com/alexose/constantdanger"
+  "homepage": "https://github.com/alexose/constantdanger",
+  "dependencies": {
+    "spotcrime": "0.0.2"
+  }
 }
