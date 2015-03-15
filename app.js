@@ -37,9 +37,13 @@ function main(){
          return;
        }
 
-       var func = require('./modules/' + file);
-       func(emitter);
-       console.log('Registered module ' + file);
+       try {
+         var func = require('./modules/' + file);
+         func(emitter);
+         console.log('Registered module ' + file);
+       } catch(e){
+          console.log('Could not load module ' + file + ': ' + e.toString());
+       }
     });
 }
 

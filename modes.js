@@ -2,8 +2,20 @@
 // Ideally, each observation has a 'relevance score' between 0 and 100.
 module.exports = {
     general : {
-        entropy : 40,
-        air_quality: 30
+        entropy:              40,
+        air_quality:          30,
+        excessivetemperature: 20, // Temp > 100
+        lowtemperature:       20,  // Temp < 20
+        gasleak:              80,
+        angrysportsfans:      20,
+        air_quality:          10,
+        crime:                35,
+
+        // Via yourmapper2 API
+        bridge_safety:        30,
+        meth_labs:            50,
+        toxic_emissions:      30,
+        toxic_chemicals:      35
     },
     bodily_harm : {
         excessivetemperature: 20, // Temp > 100
@@ -11,7 +23,13 @@ module.exports = {
         gasleak:              80,
         angrysportsfans:      20,
         air_quality:          10,
-        crime:                35
+        crime:                35,
+
+        // Via yourmapper2 API
+        bridge_safety:        30,
+        meth_labs:            50,
+        toxic_emissions:      30,
+        toxic_chemicals:      35
     },
     emotional_harm : {
         angrysportsfans:      10,
