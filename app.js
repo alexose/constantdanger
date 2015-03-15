@@ -1,9 +1,11 @@
 var EventEmitter = require('events').EventEmitter
   , fs = require('fs')
   , modes = require('./modes.js')
-  , log = require('npmlog');
+  , log = require('npmlog')
+  , sparkline = require('sparkline')
+  , colors = require('colors');
 
-var verbose = true;
+log.level = 'verbose';
 
 main();
 
@@ -53,24 +55,22 @@ function updateReadout(index, mode){
 
     var formula = modes[mode]
       , total = 0
-      , info = '';
+      , info = ''
+      , threshold = 1
+      , arr = [];
 
     // Based on the keys we specify, multiple value by weight and add them together
     for (var prop in formula){
         var multiplier = formula[prop] / 100
           , value = parseFloat(index[prop], 10) || 0;
 
+        arr.push(value);
         total += value * multiplier;
-        info += prop + ': ' + value + ' * ' + multiplier + ', ';
     }
 
-    // TODO: Output this value to the geiger meter!
-
-    if (verbose){
-        log.verbose('Danger level: ' + total + ' (' + info + ')');
-    } else {
-        log.verbose('Danger level: ' + total);
-    }
+    process.stdout.clearLine();  // clear current text
+    process.stdout.cursorTo(0);  // move cursor to beginning of line
+    process.stdout.write('     Danger level: ' + sparkline(arr) + '    (' + Math.round((total * 100) / 100) + ')');
 }
 
 function getFiles (dir, files_){
