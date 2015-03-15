@@ -1,13 +1,63 @@
 var EventEmitter = require('events').EventEmitter
   , fs = require('fs')
-  , modes = require('./modes.js')
-  , log = require('npmlog')
-  , sparkline = require('sparkline')
-  , colors = require('colors');
+  , modes = require('./modes.js');
 
-log.level = 'verbose';
+var verbose = true;
 
 main();
+
+function ioSetup(){
+    var guagePort = 3;
+    var modeSelectorPort = 4;
+    var dangerZonePort = 3;
+    
+    var ioDevices = {};
+    
+    var mraa = require("mraa");
+    
+    var guageObject = new mraa.Pwm(guagePort, -1, false);
+    guageObject.enable(true);
+    guageObject.period_us(2000);
+    
+    ioDevices.setGuage = function(percent){
+        // Calibration value
+        var max = 0.0089;
+        var value = (percent > 100) ? 100 : (percent * max);
+        
+        guageObject.write(value);
+    }
+    
+    
+    var modeSwitch = new mraa.Aio(modeSelectorPort);
+    
+    ioDevices.getMode = function(){
+        var switchValue = modeSwitch.read();
+        // mode, upper limit
+        // These numbers are fucked
+        var modeList = [
+            {name: 'off', resistance: 54784},
+            {name: 'off', resistance: 29120},
+            {name: 'off', resistance: 8768},
+            {name: 'off', resistance: 51648},
+            {name: 'off', resistance: 30080},
+            {name: 'off', resistance: 9216},
+            {name: 'off', resistance: 56384},
+        ];
+        
+        var mode = 0;
+        
+        modeList.forEach(function(x){
+            if(switchValue > x.resistance){
+                mode = x.name;
+            }
+        });
+        
+        return mode;
+    }
+    
+    
+    return ioDevices;
+}
 
 function main(){
 
@@ -16,7 +66,11 @@ function main(){
 
     // Make an EventEmitter
     var emitter = new EventEmitter();
+    
+    var ioDevices = ioSetup();
 
+    // usage: ioDevices.setGuage() or ioDevices.getMode();
+    
     emitter.on('register', function(name){
         emitter.on(name, function(value){
             index[name] = value;
@@ -28,7 +82,7 @@ function main(){
         if (modes[name]){
             mode = name;
         } else {
-            log.warn('Oh no!  There is no mode called ' + name + '.');
+            console.log('Oh no!  There is no mode called ' + name + '.');
         }
     });
 
@@ -37,15 +91,15 @@ function main(){
 
     require('fs').readdirSync(path).forEach(function(file) {
        if (! /\.js$/.test(file)){
-           return;
+         return;
        }
 
        try {
-           var func = require('./modules/' + file);
-           func(emitter);
-           log.info('Registered module ' + file);
+         var func = require('./modules/' + file);
+         func(emitter);
+         console.log('Registered module ' + file);
        } catch(e){
-           log.warn('Could not load module ' + file + ': ' + e.toString());
+          console.log('Could not load module ' + file + ': ' + e.toString());
        }
     });
 }
@@ -55,30 +109,23 @@ function updateReadout(index, mode){
 
     var formula = modes[mode]
       , total = 0
-      , info = ''
-      , threshold = 1
-      , arr = [];
+      , info = '';
 
     // Based on the keys we specify, multiple value by weight and add them together
     for (var prop in formula){
         var multiplier = formula[prop] / 100
           , value = parseFloat(index[prop], 10) || 0;
 
-        arr.push(value);
         total += value * multiplier;
+        info += prop + ': ' + value + ' * ' + multiplier + ', ';
     }
 
-    var str = Math.round((total * 100) / 100).toString();
-
-    // Colorize
-    if (total >= 0)  str = str.green;
-    if (total > 20) str = str.yellow;
-    if (total > 40) str = str.orange;
-    if (total > 60) str = str.red;
-
-    process.stdout.clearLine();  // clear current text
-    process.stdout.cursorTo(0);  // move cursor to beginning of line
-    process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')');
+    
+    if (verbose){
+        console.log('Danger level: ' + total + ' (' + info + ')');
+    } else {
+        console.log('Danger level: ' + total);
+    }
 }
 
 function getFiles (dir, files_){
@@ -94,4 +141,3 @@ function getFiles (dir, files_){
     }
     return files_;
 }
-
