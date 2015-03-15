@@ -6,13 +6,26 @@ main();
 
 function main(){
 
+    var index = {}
+      , mode = 'general';
+
     // Make an EventEmitter
     var emitter = new EventEmitter();
 
     emitter.on('register', function(name){
         emitter.on(name, function(value){
-            console.log(name + ' broadcasted value ' + value + '!');
+            // console.log(name + ' broadcasted value ' + value);
+            index[name] = value;
+            updateReadout(index, mode);
         });
+    });
+
+    emitter.on('mode', function(name){
+        if (modes[name]){
+            mode = name;
+        } else {
+            console.log('Oh no!  There is no mode called ' + name + '.');
+        }
     });
 
     // Load all modules
@@ -20,12 +33,26 @@ function main(){
 
     require('fs').readdirSync(path).forEach(function(file) {
        var func = require('./modules/' + file);
-
        func(emitter);
-
        console.log('Registered module ' + file);
-
     });
+}
+
+// Update the reading on the Geiger meter
+function updateReadout(index, mode){
+
+    var formula = modes[mode]
+      , total = 0;
+
+    // Based on the keys we specify, multiple value by weight and add them together
+    for (var prop in formula){
+        var multiplier = formula[prop]
+          , value = index[prop] || 0;
+
+        total += value * multplier;
+    }
+
+    console.log('Danger level: ' + total);
 }
 
 function getFiles (dir, files_){
