@@ -16,6 +16,7 @@
   "homepage": "https://github.com/alexose/constantdanger",
   "dependencies": {
     "nmea-0183": "0.0.7",
+    "serialport": "^1.6.2",
     "spotcrime": "0.0.2"
   }
 }
