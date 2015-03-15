@@ -5,9 +5,10 @@ module.exports = function(emitter) {
 	var threshold = 500;
 
 	function get_crimes(location, callback) {
-		spotcrime.getCrimes(location, radius, function(err, crimes) {
+/*		spotcrime.getCrimes(location, radius, function(err, crimes) {
 			callback(crimes, err);
 		});
+		*/
 	}
 
 	emitter.emit('register', 'crime');
