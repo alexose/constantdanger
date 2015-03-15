@@ -44,5 +44,14 @@ module.exports = {
 
     financial_harm : {
         stockmarketdown:      20
-    }
+    },
+
+    entropy : {
+	entropy:              100
+    },
+
+    test : {
+	entropy:              100
+    },
 }
+

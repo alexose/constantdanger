@@ -23,39 +23,39 @@ function ioSetup(){
         // Calibration value
         var max = 0.0089;
         var value = (percent > 100) ? 100 : (percent * max);
-        
+
         guageObject.write(value);
     }
-    
-    
+
+
     var modeSwitch = new mraa.Aio(modeSelectorPort);
-    
+
     ioDevices.getMode = function(){
         var switchValue = modeSwitch.read();
         // mode, upper limit
-        // These numbers are fucked
         var modeList = [
-            {name: 'off', resistance: 54784},
-            {name: 'off', resistance: 29120},
-            {name: 'off', resistance: 8768},
-            {name: 'off', resistance: 51648},
-            {name: 'off', resistance: 30080},
-            {name: 'off', resistance: 9216},
-            {name: 'off', resistance: 56384},
+            {name: 'off', resistance: 1000},
+            {name: 'general', resistance: 900},
+            {name: 'bodily_harm', resistance: 800},
+            {name: 'emotional_harm', resistance: 700},
+            {name: 'financial_harm', resistance: 600},
+            {name: 'cyber', resistance: 500},
+            {name: 'social', resistance: 400},
+            {name: 'entropy', resistance: 300},
+            {name: 'test', resistance: 200},
         ];
-        
+
         var mode = 0;
-        
+
         modeList.forEach(function(x){
-            if(switchValue > x.resistance){
+            if(switchValue < x.resistance){
                 mode = x.name;
             }
         });
-        
+
         return mode;
     }
-    
-    
+
     return ioDevices;
 }
 
@@ -120,7 +120,6 @@ function updateReadout(index, mode){
         info += prop + ': ' + value + ' * ' + multiplier + ', ';
     }
 
-    
     if (verbose){
         console.log('Danger level: ' + total + ' (' + info + ')');
     } else {
