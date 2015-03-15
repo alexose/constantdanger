@@ -3,7 +3,7 @@
 module.exports = {
 
     general : {
-        entropy:              40,
+        entropy:              15,
         air_quality:          30,
         excessivetemperature: 20, // Temp > 100
         lowtemperature:       20,  // Temp < 20
@@ -46,12 +46,27 @@ module.exports = {
         stockmarketdown:      20
     },
 
-    entropy : {
-	entropy:              100
+    test : {
+        entropy:              100
     },
 
-    test : {
-	entropy:              100
+    cyber_harm: {
+        low_bluetooth:        10,
+        excessive_bluetooth:  75,
+        nowifi:               90,
+        insecure_wifi:        55
     },
+
+    social_harm: {
+        angrysportsfans:      20,
+        meth_labs:            50,
+        stockmarketdown:      20,
+        crime:                35,
+        nowifi:               90
+    },
+
+    entropy_harm: {
+        entropy:              40
+    }
 }
 

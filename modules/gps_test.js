@@ -1,7 +1,7 @@
 // Broadcast fake GPS data every 10 seconds
 
 module.exports = function(emitter) {
-    setInterval(function(){
+    function update(){
         emitter.emit('gps', {
             id: 'GPGGA',
             time: '150017.000',
@@ -15,5 +15,8 @@ module.exports = function(emitter) {
             dgpsUpdate: '',
             dgpsReference: ''
         });
-    }, 10 * 1000);
+    }
+
+    update();
+    setInterval(update, 10 * 1000);
 }
