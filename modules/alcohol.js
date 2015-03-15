@@ -23,8 +23,8 @@ module.exports = function(emitter, pin) {
                 },
 
                 to_percentage: function(value) {
-                        var high_alcohol_concentration = 750;
                         var factor_of_nonexistence = 200;
+                        var high_alcohol_concentration = 750 - factor_of_nonexistence;
                         return (value - factor_of_nonexistence) * 100 / high_alcohol_concentration;
                 }
         };
