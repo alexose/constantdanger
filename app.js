@@ -55,6 +55,8 @@ function updateReadout(index, mode){
         info += prop + ': ' + value + ' * ' + multiplier + ', ';
     }
 
+    // TODO: Output this value to the geiger meter!
+
     if (verbose){
         console.log('Danger level: ' + total + ' (' + info + ')');
     } else {
