@@ -44,5 +44,24 @@ module.exports = {
 
     financial_harm : {
         stockmarketdown:      20
+    },
+
+    cyber_harm: {
+        low_bluetooth:        10,
+        excessive_bluetooth:  75,
+        nowifi:               90,
+        insecure_wifi:        55
+    },
+
+    social_harm: {
+        angrysportsfans:      20,
+        meth_labs:            50,
+        stockmarketdown:      20,
+        crime:                35,
+        nowifi:               90
+    },
+
+    entropy_harm: {
+        entropy:              40
     }
 }
