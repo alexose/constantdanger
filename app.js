@@ -9,6 +9,8 @@ var EventEmitter = require('events').EventEmitter
 cursor.hide();
 
 var verbose = false;
+var ansi = false;
+
 log.level = verbose ? 'verbose' : 'info';
 
 main();
@@ -154,9 +156,10 @@ function updateReadout(index, ioDevices){
 
         // TODO: scale this value nicely
         ioDevices.setGuage(Math.min(num, 100) * 5);
-
-        process.stdout.cursorTo(0);  // move cursor to beginning of line
-        process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')                ' + info);
+        if (ansi) {
+          process.stdout.cursorTo(0);  // move cursor to beginning of line
+          process.stdout.write('     Danger level: ' + sparkline(arr) + '  (' + str + ')                ' + info);
+	}
     }, 10);
 
 }
