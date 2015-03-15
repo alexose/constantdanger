@@ -42,14 +42,14 @@ function ioSetup(){
 
         // mode, upper limit
         var modeList = [
-            {name: 'off', resistance: 1000},
-            {name: 'general', resistance: 900},
-            {name: 'bodily_harm', resistance: 800},
-            {name: 'emotional_harm', resistance: 700},
-            {name: 'financial_harm', resistance: 600},
+            {name: 'off', resistance: 1024},
+            {name: 'general', resistance: 990},
+            {name: 'bodily_harm', resistance: 854},
+            {name: 'emotional_harm', resistance: 740},
+            {name: 'financial_harm', resistance: 640},
             {name: 'cyber', resistance: 500},
-            {name: 'social', resistance: 400},
-            {name: 'entropy', resistance: 300},
+            {name: 'social', resistance: 415},
+            {name: 'entropy', resistance: 315},
             {name: 'test', resistance: 200},
         ];
 
