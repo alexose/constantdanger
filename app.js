@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter
   , fs = require('fs')
-  , modes = require('./modes.js');
+  , modes = require('./modes.js')
+  , log = require('npmlog');
 
 var verbose = true;
 
@@ -25,7 +26,7 @@ function main(){
         if (modes[name]){
             mode = name;
         } else {
-            console.log('Oh no!  There is no mode called ' + name + '.');
+            log.warn('Oh no!  There is no mode called ' + name + '.');
         }
     });
 
@@ -34,15 +35,15 @@ function main(){
 
     require('fs').readdirSync(path).forEach(function(file) {
        if (! /\.js$/.test(file)){
-         return;
+           return;
        }
 
        try {
-         var func = require('./modules/' + file);
-         func(emitter);
-         console.log('Registered module ' + file);
+           var func = require('./modules/' + file);
+           func(emitter);
+           log.info('Registered module ' + file);
        } catch(e){
-          console.log('Could not load module ' + file + ': ' + e.toString());
+           log.warn('Could not load module ' + file + ': ' + e.toString());
        }
     });
 }
@@ -66,9 +67,9 @@ function updateReadout(index, mode){
     // TODO: Output this value to the geiger meter!
 
     if (verbose){
-        console.log('Danger level: ' + total + ' (' + info + ')');
+        log.verbose('Danger level: ' + total + ' (' + info + ')');
     } else {
-        console.log('Danger level: ' + total);
+        log.verbose('Danger level: ' + total);
     }
 }
 
