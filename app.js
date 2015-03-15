@@ -33,6 +33,10 @@ function main(){
     var path = require('path').join(__dirname, 'modules')
 
     require('fs').readdirSync(path).forEach(function(file) {
+       if (! /\.js$/.test(file)){
+         return;
+       }
+
        var func = require('./modules/' + file);
        func(emitter);
        console.log('Registered module ' + file);
