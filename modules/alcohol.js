@@ -1,3 +1,5 @@
+// Note: the alcohol sensor apparently needs a couple minutes to warm up.
+
 var mraa = require('mraa');
 
 module.exports = function(emitter, pin) {
