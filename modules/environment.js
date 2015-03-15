@@ -5,8 +5,6 @@ var https = require('https')
 // Read in GPS data and respond with data from YourMapper2
 module.exports = function(emitter){
 
-    // TODO: actually update via API
-    // hey, this is hackathon project...
     var json = fs.readFileSync('./yourmapper.cache.json', 'UTF-8')
       , data = JSON.parse(json);
 
@@ -23,7 +21,10 @@ module.exports = function(emitter){
     }
 
     // Broadcast on gps update!
-    emitter.on('gpsupdate', function(latlon){
+    emitter.on('gps', function(latlon){
+
+        // TODO: actually update via API
+        // hey, this is hackathon project...
         data.items.forEach(function(field){
             for (var prop in fields){
                 if (field.Name === fields[prop]){
@@ -33,11 +34,6 @@ module.exports = function(emitter){
             }
         });
     });
-
-    // TODO: hook this up to actual GPS
-    setInterval(function(){
-        emitter.emit('gpsupdate', [ 42.3875970,-71.0994970 ]);
-    }, 10 * 1000);
 };
 
 function getData(){

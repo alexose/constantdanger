@@ -1,6 +1,7 @@
 // Modes!
 // Ideally, each observation has a 'relevance score' between 0 and 100.
 module.exports = {
+
     general : {
         entropy:              40,
         air_quality:          30,
@@ -17,6 +18,7 @@ module.exports = {
         toxic_emissions:      30,
         toxic_chemicals:      35
     },
+
     bodily_harm : {
         excessivetemperature: 20, // Temp > 100
         lowtemperature:       20,  // Temp < 20
@@ -31,6 +33,7 @@ module.exports = {
         toxic_emissions:      30,
         toxic_chemicals:      35
     },
+
     emotional_harm : {
         angrysportsfans:      10,
         stockmarketdown:      20,
@@ -38,4 +41,8 @@ module.exports = {
         air_quality:          20,
         nowifi:               90
     },
+
+    financial_harm : {
+        stockmarketdown:      20
+    }
 }
