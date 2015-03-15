@@ -52,7 +52,7 @@ function updateReadout(index, mode){
           , value = parseFloat(index[prop], 10) || 0;
 
         total += value * multiplier;
-        info += prop + ': ' + value + ' * ' + multiplier + ',';
+        info += prop + ': ' + value + ' * ' + multiplier + ', ';
     }
 
     if (verbose){

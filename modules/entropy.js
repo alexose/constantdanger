@@ -12,6 +12,8 @@ module.exports = function(emitter){
     if (entropy > 90){
       var value =  Math.min((entropy - 90) * 10, 100);
       emitter.emit('entropy', value);
+    } else {
+      emitter.emit('entropy', 0);
     }
 
   }, 1 * 5000);
