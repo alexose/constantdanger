@@ -6,10 +6,13 @@ var EventEmitter = require('events').EventEmitter
   , colors = require('colors')
   , cursor = require('ansi')(process.stdout);
 
-cursor.hide();
 
 var verbose = false;
 var ansi = false;
+
+if (ansi) {
+  cursor.hide();
+}
 
 log.level = verbose ? 'verbose' : 'info';
 
