@@ -6,7 +6,7 @@ module.exports = function(emitter) {
 
 	function get_crimes(location, callback) {
 		spotcrime.getCrimes(location, radius, function(err, crimes) {
-			callback(crimes);
+			callback(crimes, err);
 		});
 	}
 	
@@ -18,9 +18,11 @@ module.exports = function(emitter) {
 			lon: data.longitude
 		};
 		
-		get_crimes(location, function(crimes) {
-			var percentage = crimes.length * 100 / threshold;
-			emitter.emit('crime', percentage);
+		get_crimes(location, function(crimes, err) {
+			if (!err) {
+				var percentage = crimes.length * 100 / threshold;
+				emitter.emit('crime', percentage);
+			}
 		});
 	});
 };
