@@ -2,6 +2,8 @@ var EventEmitter = require('events').EventEmitter
   , fs = require('fs')
   , modes = require('./modes.js');
 
+var verbose = true;
+
 main();
 
 function main(){
@@ -14,7 +16,6 @@ function main(){
 
     emitter.on('register', function(name){
         emitter.on(name, function(value){
-            // console.log(name + ' broadcasted value ' + value);
             index[name] = value;
             updateReadout(index, mode);
         });
@@ -42,7 +43,8 @@ function main(){
 function updateReadout(index, mode){
 
     var formula = modes[mode]
-      , total = 0;
+      , total = 0
+      , info = '';
 
     // Based on the keys we specify, multiple value by weight and add them together
     for (var prop in formula){
@@ -50,9 +52,14 @@ function updateReadout(index, mode){
           , value = parseFloat(index[prop], 10) || 0;
 
         total += value * multiplier;
+        info += prop + ': ' + value + ' * ' + multiplier + ',';
     }
 
-    console.log('Danger level: ' + total);
+    if (verbose){
+        console.log('Danger level: ' + total + ' (' + info + ')');
+    } else {
+        console.log('Danger level: ' + total);
+    }
 }
 
 function getFiles (dir, files_){
