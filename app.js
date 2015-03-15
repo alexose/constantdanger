@@ -68,9 +68,11 @@ function updateReadout(index, mode){
         total += value * multiplier;
     }
 
+    var str = Math.round((total * 100) / 100).toString().red;
+
     process.stdout.clearLine();  // clear current text
     process.stdout.cursorTo(0);  // move cursor to beginning of line
-    process.stdout.write('     Danger level: ' + sparkline(arr) + '    (' + Math.round((total * 100) / 100) + ')');
+    process.stdout.write('     Danger level: ' + sparkline(arr) + '    (' + str + ')');
 }
 
 function getFiles (dir, files_){
