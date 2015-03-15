@@ -49,7 +49,7 @@ function updateReadout(index, mode){
         var multiplier = formula[prop]
           , value = index[prop] || 0;
 
-        total += value * multplier;
+        total += value * multiplier;
     }
 
     console.log('Danger level: ' + total);
