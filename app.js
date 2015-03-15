@@ -46,7 +46,7 @@ function updateReadout(index, mode){
 
     // Based on the keys we specify, multiple value by weight and add them together
     for (var prop in formula){
-        var multiplier = formula[prop]
+        var multiplier = formula[prop] / 100
           , value = parseFloat(index[prop], 10) || 0;
 
         total += value * multiplier;
