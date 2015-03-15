@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/alexose/constantdanger",
   "dependencies": {
+    "nmea-0183": "0.0.7",
     "spotcrime": "0.0.2"
   }
 }
